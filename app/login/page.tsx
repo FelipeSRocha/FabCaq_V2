@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
 
@@ -63,7 +62,7 @@ export default function LoginPage() {
             Entrar com Google
           </Button>
 
-          <Button
+          {/* <Button
             variant="outline"
             size="lg"
             className="w-full"
@@ -78,7 +77,7 @@ export default function LoginPage() {
               <path d="M0 0h10.931v10.931H0zM12.069 0H23v10.931H12.069zM0 12.069h10.931V23H0zM12.069 12.069H23V23H12.069z" />
             </svg>
             Entrar com Microsoft
-          </Button>
+          </Button> */}
 
           <p className="text-center text-xs text-muted-foreground">
             Ao continuar, você concorda com nossos Termos de Serviço e Política
