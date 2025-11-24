@@ -10,6 +10,7 @@ import { Building2, Mail, Phone, MapPin, Hash, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { FormInput } from "./FormInput";
 import { FormTextarea } from "./FormTextarea";
+import { createCompany, type CompanyData } from "@/app/actions/createCompany";
 
 interface CompanyFormData {
   companyName: string;
@@ -98,6 +99,7 @@ export const RegistrationForm = ({ initialEmail }: RegistrationFormProps) => {
     setIsLoading(true);
 
     try {
+      // Validate required fields
       if (!formData.companyName || !formData.cnpj || !formData.email) {
         toast({
           title: "Campos obrigatórios",
@@ -108,21 +110,31 @@ export const RegistrationForm = ({ initialEmail }: RegistrationFormProps) => {
         return;
       }
 
-      console.log("Form data:", formData);
+      // Call server action
+      const result = await createCompany(formData as CompanyData);
 
-      toast({
-        title: "Cadastro realizado com sucesso!",
-        description: "Sua empresa foi registrada. Redirecionando...",
-      });
+      if (result.success) {
+        toast({
+          title: "Cadastro realizado com sucesso!",
+          description: result.message,
+        });
 
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
+        // Redirect to dashboard or home
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1500);
+      } else {
+        toast({
+          title: "Erro ao cadastrar empresa",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       console.error("Error registering company:", error);
       toast({
         title: "Erro ao cadastrar empresa",
-        description: "Tente novamente mais tarde.",
+        description: "Ocorreu um erro inesperado. Tente novamente.",
         variant: "destructive",
       });
     } finally {
